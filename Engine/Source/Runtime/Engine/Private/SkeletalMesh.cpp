@@ -1695,6 +1695,14 @@ void USkeletalMesh::Serialize( FArchive& Ar )
 	//@todo legacy
 	TArray<UObject*> DummyObjs;
 	Ar << DummyObjs;
+	
+	// Usually set to CatwalkClothHook if the character's SkeletalMesh has cloth physics
+	// Setting this to "None" will probably break some stuff
+	// TODO: figure out cloth physics and serialization
+	if (Ar.IsCooking()) {
+		FName T8PhysicsName = FName("None");
+		Ar << T8PhysicsName;
+	}
 
 	if (Ar.IsLoading() && Ar.CustomVer(FRenderingObjectVersion::GUID) < FRenderingObjectVersion::TextureStreamingMeshUVChannelData)
 	{
